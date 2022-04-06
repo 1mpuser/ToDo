@@ -1,32 +1,38 @@
-import Todo from './components/Todo';
+// import Todo from './components/UI/todo/Todo';
+// import MyButton from './components/UI/button/MyButton';
+// import WantedButton from './components/UI/normal button/WantedButton';
+// import MyInput from './components/UI/input/MyInput';
 import './styles/App.css';
-import { nanoid } from 'nanoid';
-import { useState, useRef } from 'react';
-import MyButton from './components/UI/button/MyButton';
-import WantedButton from './components/UI/normal button/WantedButton';
-import MyInput from './components/UI/input/MyInput';
+//import { nanoid } from 'nanoid';
+import { useState /*useRef*/ } from 'react';
 import FormDiv from './components/UI/FormDiv/FormDiv';
+import ToDoList from './components/UI/TodoList/ToDoList';
 
 function App() {
-	let id = nanoid;
-	const buttonRef = useRef();
-	const [arr, setArr] = useState(['JS', 'Java', 'Le petuhon']);
+	//let id = nanoid;
+	//const buttonRef = useRef();
+	const [toDoContent, setToDoContentArr] = useState([
+		{
+			title: 'JS',
+			body: 'Js - норм, а все кто его хейтит петухи',
+			color: 'yellow',
+		},
+		{ title: 'Java', body: 'Java - ну такое', color: 'tomato' },
+		{ title: 'Le petuhon', body: 'Петухон для быдла', color: 'hotpink' },
+	]);
 	//todo
 	//сделать
 
-	//в идеале тут должен быть массив объектов, которые мы можем перебирать там,
-	//добавлять различный функционал
-	const todos = arr.map((item, index) => (
-		<Todo key={id()} id={index} name={item} />
-	));
 	const createToDo = (newToDo) => {
-		setArr([...arr, newToDo]);
+		setToDoContentArr([...toDoContent, newToDo]);
+	};
+	const removeTodo = (removeElem) => {
+		setToDoContentArr(toDoContent.filter((item) => item !== removeElem));
 	};
 	return (
 		<>
 			<FormDiv create={createToDo} />
-			{todos}
-			<br></br>
+			<ToDoList remove={removeTodo} objs={toDoContent} />
 		</>
 	);
 }

@@ -6,17 +6,20 @@ import { nanoid } from 'nanoid';
 
 const FormDiv = ({create}) => {
     let id = nanoid;
-    let [todoText, setTodoText] = useState('');
+    let [todoTitle, setTodoTitle] = useState('');
+    let [todoText, setTodoDescription] = useState('');
 
     const addTodo = (event) => {
         event.preventDefault();
-        const newToDO = todoText;
+        const newToDO = {title: todoTitle, body: todoText};
         create(newToDO);
-        setTodoText('')
+        setTodoTitle('');
+        setTodoDescription('');
     }
 
     return( <form className={classes.Mdiv}>
-        <MyInput id={id()} placeholder={'Some text'} value={todoText} onChange = {(event)=>setTodoText(event.target.value)}/>
+        <MyInput id={id()} placeholder={'There is ur title'} value={todoTitle} onChange = {(event)=>setTodoTitle(event.target.value)}/>
+        <MyInput id = {id()} placeholder={'There is ur text'}value={todoText} onChange = {(event)=>setTodoDescription(event.target.value)}/>
         <WantedButton id={id()} onClick = {addTodo}>Добавить TODO</WantedButton>
     </form>)
 }

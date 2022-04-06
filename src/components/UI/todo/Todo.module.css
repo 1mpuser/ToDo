@@ -1,0 +1,16 @@
+.td{
+    display: flex;
+    padding: 15px;
+    border: 1px dashed indigo;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+.tdh{
+    width: 800px;
+}
+.btn{
+    cursor: pointer;
+    margin: 5px;
+    width: 70px;
+}
