@@ -1,3 +1,6 @@
 .MSL{
     width: 150px;
+    display: block;
+    height: 30px;
+    border: 1px dashed burlywood;
 }

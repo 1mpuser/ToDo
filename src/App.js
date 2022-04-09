@@ -14,14 +14,14 @@ function App() {
 	//const buttonRef = useRef();
 	const [toDoContent, setToDoContentArr] = useState([
 		{
-			title: 'JS',
+			title: 'AS',
 			body: 'Js - норм, а все кто его хейтит петухи',
 			color: 'yellow',
 		},
-		{ title: 'Java', body: 'Java - ну такое', color: 'tomato' },
-		{ title: 'Le petuhon', body: 'Петухон для быдла', color: 'hotpink' },
+		{ title: 'cava', body: 'Java - ну такое', color: 'tomato' },
+		{ title: 'be petuhon', body: 'Петухон для быдла', color: 'hotpink' },
 	]);
-	const [selectValue, setSelectValue] = useState();
+	const [selectSort, setSelectedSort] = useState('');
 	const createToDo = (newToDo) => {
 		setToDoContentArr([...toDoContent, newToDo]);
 	};
@@ -29,7 +29,10 @@ function App() {
 		setToDoContentArr(toDoContent.filter((item) => item !== removeElem));
 	};
 	const sortObjs = (sort) => {
-		console.log(sort);
+		setSelectedSort(sort);
+		setToDoContentArr(
+			[...toDoContent].sort((a, b) => a[sort].localeCompare(b[sort]))
+		);
 	};
 	return (
 		<>
@@ -45,12 +48,11 @@ function App() {
 					},
 					{
 						value: 'text',
-						name: 'По названию тексту todo',
+						name: 'По названию текста todo',
 					},
 				]}
-				value={selectValue}
-				setValue={setSelectValue}
-				onChange={() => sortObjs}
+				value={selectSort}
+				setValue={sortObjs}
 			/>
 			<ToDoList remove={removeTodo} objs={toDoContent} />
 		</>
