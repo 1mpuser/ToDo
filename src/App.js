@@ -4,39 +4,59 @@
 // import MyInput from './components/UI/input/MyInput';
 import './styles/App.css';
 //import { nanoid } from 'nanoid';
-import { useState /*useRef*/ } from 'react';
+import { useState, useMemo } from 'react';
 import FormDiv from './components/UI/FormDiv/FormDiv';
 import ToDoList from './components/UI/TodoList/ToDoList';
 import MySelect from './components/UI/select/MySelect';
+import MyInput from './components/UI/input/MyInput';
 
 function App() {
 	//let id = nanoid;
 	//const buttonRef = useRef();
 	const [toDoContent, setToDoContentArr] = useState([
 		{
-			title: 'AS',
+			title: 'JS',
 			body: 'Js - норм, а все кто его хейтит петухи',
 			color: 'yellow',
 		},
-		{ title: 'cava', body: 'Java - ну такое', color: 'tomato' },
-		{ title: 'be petuhon', body: 'Петухон для быдла', color: 'hotpink' },
+		{ title: 'Java', body: 'Java - ну такое', color: 'tomato' },
+		{ title: 'Le petuhon', body: 'Петухон для быдла', color: 'hotpink' },
 	]);
-	const [selectSort, setSelectedSort] = useState('');
+	const [sortType, setSortType] = useState('');
+
 	const createToDo = (newToDo) => {
+		//this createbutton would throw in form div which would return an object
 		setToDoContentArr([...toDoContent, newToDo]);
 	};
 	const removeTodo = (removeElem) => {
 		setToDoContentArr(toDoContent.filter((item) => item !== removeElem));
+		//we'll throw this to button which would return todo object
 	};
 	const sortObjs = (sort) => {
-		setSelectedSort(sort);
-		setToDoContentArr(
-			[...toDoContent].sort((a, b) => a[sort].localeCompare(b[sort]))
-		);
+		setSortType(sort);
 	};
+	function getSortedPosts() {
+		console.log('khuynya');
+		if (sortType)
+			return [...toDoContent].sort((a, b) =>
+				a[sortType].localeCompare(b[sortType])
+			);
+		return toDoContent;
+	}
+	let sortedContent = useMemo(() => getSortedPosts(), [sortType, toDoContent]);
+	//this search functional is not much needed but we'll do it 4 practice
+	const [searchText, setSearchText] = useState('');
+
 	return (
 		<>
 			<FormDiv create={createToDo} />
+			<br></br>
+			<br></br>
+			<MyInput
+				type='text'
+				value={searchText}
+				onChange={(event) => setSearchText(event.target.value)}
+			/>
 			<br></br>
 			<br></br>
 			<MySelect
@@ -47,14 +67,14 @@ function App() {
 						name: 'По названию todo',
 					},
 					{
-						value: 'text',
+						value: 'body',
 						name: 'По названию текста todo',
 					},
 				]}
-				value={selectSort}
+				value={sortType}
 				setValue={sortObjs}
 			/>
-			<ToDoList remove={removeTodo} objs={toDoContent} />
+			<ToDoList remove={removeTodo} objs={sortedContent} />
 		</>
 	);
 }

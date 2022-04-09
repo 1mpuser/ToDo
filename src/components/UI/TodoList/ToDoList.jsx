@@ -7,7 +7,7 @@ const ToDoList = ({remove, objs}) => {
     let id = nanoid;
     //posts is just an array with objects which we can take to map and take to todos
     const todos = objs.map((item, index) => (
-		<Todo remove={remove} key={id()} number={index + 1} /*title={item.title} body = {item.body}*/ object = {item}/>
+		<Todo remove={remove} key={id()} number={index + 1} object = {item}/>
 	));
     let header =  <h1 style={{textAlign: 'center'}}>Тут нихуя нет</h1>;
     let div;
