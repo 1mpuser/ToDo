@@ -11,7 +11,7 @@ import MySelect from './components/UI/select/MySelect';
 import MyInput from './components/UI/input/MyInput';
 import SearchDiv from './components/SearchDiv/SearchDiv';
 import getSearchOptions from './scripts/NewOptionSearchOptionArr';
-import IsThereOneStringInAnother from './scripts/IsThereOneStringInAnother';
+import TodoFilter from './components/TodoFilter';
 
 function App() {
 	//let id = nanoid;
@@ -61,22 +61,30 @@ function App() {
 		() => getSearchOptions(options),
 		[options]
 	);
-	let sortedContent = useMemo(() => getSortedPosts(), [sortType, toDoContent]);
+	const sortedContent = useMemo(
+		() => getSortedPosts(),
+		[sortType, toDoContent]
+	);
 	//this search functional is not much needed but we'll do it 4 practice
 	const [searchText, setSearchText] = useState('');
 	const [searchType, setSearchType] = useState('');
 
 	const [searchedAndSortedTODOS, setSearchedAndSortedTODOS] = useState('');
 
-	if (searchText !== '' && searchType !== '') {
-		setSearchedAndSortedTODOS(sortedContent);
-		setSearchedAndSortedTODOS(
-			[...searchedAndSortedTODOS].filter((item) =>
-				IsThereOneStringInAnother(item.searchType, searchText)
-			)
-		);
+	function search() {
+		if (searchText !== '' && searchType !== 'Тип поиска') {
+			setSearchedAndSortedTODOS(sortedContent);
+			setSearchedAndSortedTODOS(
+				[...searchedAndSortedTODOS].filter((item) =>
+					item[searchType].toLowerCase().includes(searchText.toLowerCase())
+				)
+			);
+		} else setSearchedAndSortedTODOS(sortedContent);
 	}
-
+	const searchingRender = useMemo(
+		() => search(),
+		[sortedContent, searchType, searchText]
+	);
 	function setType(type) {
 		setSearchType(type);
 	}
@@ -102,12 +110,7 @@ function App() {
 			/> */}
 			<br></br>
 			<br></br>
-			<MySelect
-				defaultValue={'Сратировка'}
-				options={options}
-				value={sortType}
-				setValue={sortObjs}
-			/>
+			<TodoFilter options={options} returnSortArr={sortObjs} />
 			<ToDoList remove={removeTodo} objs={searchedAndSortedTODOS} />
 		</>
 	);
