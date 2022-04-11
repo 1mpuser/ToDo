@@ -9,6 +9,9 @@ import FormDiv from './components/UI/FormDiv/FormDiv';
 import ToDoList from './components/UI/TodoList/ToDoList';
 import MySelect from './components/UI/select/MySelect';
 import MyInput from './components/UI/input/MyInput';
+import SearchDiv from './components/SearchDiv/SearchDiv';
+import getSearchOptions from './scripts/NewOptionSearchOptionArr';
+import IsThereOneStringInAnother from './scripts/IsThereOneStringInAnother';
 
 function App() {
 	//let id = nanoid;
@@ -22,6 +25,17 @@ function App() {
 		{ title: 'Java', body: 'Java - ну такое', color: 'tomato' },
 		{ title: 'Le petuhon', body: 'Петухон для быдла', color: 'hotpink' },
 	]);
+	const [options, setOptions] = useState([
+		{
+			value: 'title',
+			name: 'По названию todo',
+		},
+		{
+			value: 'body',
+			name: 'По тексту todo',
+		},
+	]);
+
 	const [sortType, setSortType] = useState('');
 
 	const createToDo = (newToDo) => {
@@ -36,45 +50,65 @@ function App() {
 		setSortType(sort);
 	};
 	function getSortedPosts() {
-		console.log('khuynya');
+		console.log('Got sorted');
 		if (sortType)
 			return [...toDoContent].sort((a, b) =>
 				a[sortType].localeCompare(b[sortType])
 			);
 		return toDoContent;
 	}
+	let optionsWithSearchText = useMemo(
+		() => getSearchOptions(options),
+		[options]
+	);
 	let sortedContent = useMemo(() => getSortedPosts(), [sortType, toDoContent]);
 	//this search functional is not much needed but we'll do it 4 practice
 	const [searchText, setSearchText] = useState('');
+	const [searchType, setSearchType] = useState('');
 
+	const [searchedAndSortedTODOS, setSearchedAndSortedTODOS] = useState('');
+
+	if (searchText !== '' && searchType !== '') {
+		setSearchedAndSortedTODOS(sortedContent);
+		setSearchedAndSortedTODOS(
+			[...searchedAndSortedTODOS].filter((item) =>
+				IsThereOneStringInAnother(item.searchType, searchText)
+			)
+		);
+	}
+
+	function setType(type) {
+		setSearchType(type);
+	}
+	function setSearchingText(text) {
+		setSearchText(text);
+	}
 	return (
 		<>
 			<FormDiv create={createToDo} />
 			<br></br>
 			<br></br>
-			<MyInput
+			<SearchDiv
+				options={optionsWithSearchText}
+				typeSetter={setType}
+				setQuery={setSearchingText}
+			/>
+			{/* <br></br>
+			<br></br> */}
+			{/* <MyInput
 				type='text'
 				value={searchText}
 				onChange={(event) => setSearchText(event.target.value)}
-			/>
+			/> */}
 			<br></br>
 			<br></br>
 			<MySelect
 				defaultValue={'Сратировка'}
-				options={[
-					{
-						value: 'title',
-						name: 'По названию todo',
-					},
-					{
-						value: 'body',
-						name: 'По названию текста todo',
-					},
-				]}
+				options={options}
 				value={sortType}
 				setValue={sortObjs}
 			/>
-			<ToDoList remove={removeTodo} objs={sortedContent} />
+			<ToDoList remove={removeTodo} objs={searchedAndSortedTODOS} />
 		</>
 	);
 }
