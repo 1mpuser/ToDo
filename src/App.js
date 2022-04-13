@@ -88,6 +88,16 @@ function App() {
 		() => search(),
 		[sortedContent, searchType, searchText]
 	);
+	/*
+	tried to pick some search hook but nothing worked cause of 2 interaptions 
+	
+	1st searching Render and serach which i add but nothing worked because of second interaption probably
+
+	2nd something with getsortedposts which is propbably the problem 
+
+	and u need to fix it :)
+
+	*/
 	function setType(type) {
 		setSearchType(type);
 	}
