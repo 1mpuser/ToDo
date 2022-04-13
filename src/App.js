@@ -14,7 +14,7 @@ import getSearchOptions from './scripts/NewOptionSearchOptionArr';
 import TodoFilter from './components/TodoFilter';
 import ModalWindow from './components/UI/ModalWIndow/ModalWindow';
 import MyButton from './components/UI/button/MyButton';
-
+import { useSortedTodos } from './hooks/useSortedTodos';
 function App() {
 	//let id = nanoid;
 	//const buttonRef = useRef();
@@ -53,21 +53,11 @@ function App() {
 	const sortObjs = (sort) => {
 		setSortType(sort);
 	};
-	function getSortedPosts() {
-		if (sortType)
-			return [...toDoContent].sort((a, b) =>
-				a[sortType].localeCompare(b[sortType])
-			);
-		return toDoContent;
-	}
 	let optionsWithSearchText = useMemo(
 		() => getSearchOptions(options),
 		[options]
 	);
-	const sortedContent = useMemo(
-		() => getSortedPosts(),
-		[sortType, toDoContent]
-	);
+	const sortedContent = useSortedTodos(toDoContent, sortType);
 	//this search functional is not much needed but we'll do it 4 practice
 	const [searchText, setSearchText] = useState('');
 	const [searchType, setSearchType] = useState('');
@@ -88,16 +78,7 @@ function App() {
 		() => search(),
 		[sortedContent, searchType, searchText]
 	);
-	/*
-	tried to pick some search hook but nothing worked cause of 2 interaptions 
-	
-	1st searching Render and serach which i add but nothing worked because of second interaption probably
 
-	2nd something with getsortedposts which is propbably the problem 
-
-	and u need to fix it :)
-
-	*/
 	function setType(type) {
 		setSearchType(type);
 	}
@@ -120,9 +101,10 @@ function App() {
 			<br></br>
 			<br></br>
 			<SearchDiv
-				options={optionsWithSearchText}
 				typeSetter={setType}
 				setQuery={setSearchingText}
+				options={optionsWithSearchText}
+				defaultValue={'Тип поиска'}
 			/>
 			{/* <br></br>
 			<br></br> */}

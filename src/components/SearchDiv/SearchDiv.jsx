@@ -7,7 +7,7 @@ const SearchDiv = ({typeSetter, setQuery, ...props}) => {
     function setTyper(type) {
         return setType(type);
     }
-    const defaultValue = "Тип поиска";
+    const defaultValue = props.defaultValue;
     const [type, setType] = useState(defaultValue);
     const [value, setValue] = useState('')
     typeSetter(type);
