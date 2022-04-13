@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 export const useSortedTodos = (todos, sort) => {
 	const sortedContent = useMemo(() => getSortedPosts(), [sort, todos]);
 	function getSortedPosts() {

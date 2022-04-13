@@ -1,10 +1,8 @@
 import { useMemo } from 'react';
-export const useSearchTodos = (
-	sortedTodos,
-	searchType,
-	textToSearch,
-	defaultTextSearchOption = 'Тип поиска'
-) => {
+export const useSearchTodos = (sortedTodos, searchTypeNSearchTextInArr) => {
+	let defaultTextSearchOption = 'Тип поиска';
+	const [searchType, textToSearch] = searchTypeNSearchTextInArr;
+
 	const foundTodos = useMemo(
 		() => search(),
 		[sortedTodos, searchType, textToSearch, defaultTextSearchOption]

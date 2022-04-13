@@ -15,6 +15,7 @@ import TodoFilter from './components/TodoFilter';
 import ModalWindow from './components/UI/ModalWIndow/ModalWindow';
 import MyButton from './components/UI/button/MyButton';
 import { useSortedTodos } from './hooks/useSortedTodos';
+import { useSearchTodos } from './hooks/useSearchTodos';
 function App() {
 	//let id = nanoid;
 	//const buttonRef = useRef();
@@ -53,6 +54,8 @@ function App() {
 	const sortObjs = (sort) => {
 		setSortType(sort);
 	};
+
+	//это безобидно
 	let optionsWithSearchText = useMemo(
 		() => getSearchOptions(options),
 		[options]
@@ -61,23 +64,29 @@ function App() {
 	//this search functional is not much needed but we'll do it 4 practice
 	const [searchText, setSearchText] = useState('');
 	const [searchType, setSearchType] = useState('');
-
-	const [searchedAndSortedTODOS, setSearchedAndSortedTODOS] = useState('');
-
-	function search() {
-		if (searchText !== '' && searchType !== 'Тип поиска') {
-			setSearchedAndSortedTODOS(sortedContent);
-			setSearchedAndSortedTODOS(
-				[...searchedAndSortedTODOS].filter((item) =>
-					item[searchType].toLowerCase().includes(searchText.toLowerCase())
-				)
-			);
-		} else setSearchedAndSortedTODOS(sortedContent);
-	}
-	const searchingRender = useMemo(
-		() => search(),
-		[sortedContent, searchType, searchText]
+	const array4Decomposition = useMemo(
+		() => [searchType, searchText],
+		[searchType, searchText]
 	);
+	let searchedAndSortedTODOS = useSearchTodos(
+		sortedContent,
+		array4Decomposition
+	);
+
+	// function search() {
+	// 	if (searchText !== '' && searchType !== 'Тип поиска') {
+	// 		setSearchedAndSortedTODOS(sortedContent);
+	// 		setSearchedAndSortedTODOS(
+	// 			[...searchedAndSortedTODOS].filter((item) =>
+	// 				item[searchType].toLowerCase().includes(searchText.toLowerCase())
+	// 			)
+	// 		);
+	// 	} else setSearchedAndSortedTODOS(sortedContent);
+	// }
+	// const searchingRender = useMemo(
+	// 	() => search(),
+	// 	[sortedContent, searchType, searchText]
+	// );
 
 	function setType(type) {
 		setSearchType(type);
@@ -88,7 +97,6 @@ function App() {
 	const [modalVisible, setModalStatus] = useState(false);
 	return (
 		<>
-			{/* Слишком много ререндеров с кнопкой */}
 			<MyButton
 				style={{ margin: 10 }}
 				onClick={() => setModalStatus(!modalVisible)}
