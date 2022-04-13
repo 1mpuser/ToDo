@@ -1,0 +1,19 @@
+.MdlW{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: none ;
+}
+.MdlWContent{
+    padding: 25px;
+    background: antiquewhite;
+    border-radius: 20px;
+    min-width: 250px;
+}
+.MdlW.active{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

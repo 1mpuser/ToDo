@@ -12,6 +12,8 @@ import MyInput from './components/UI/input/MyInput';
 import SearchDiv from './components/SearchDiv/SearchDiv';
 import getSearchOptions from './scripts/NewOptionSearchOptionArr';
 import TodoFilter from './components/TodoFilter';
+import ModalWindow from './components/UI/ModalWIndow/ModalWindow';
+import MyButton from './components/UI/button/MyButton';
 
 function App() {
 	//let id = nanoid;
@@ -40,6 +42,7 @@ function App() {
 
 	const createToDo = (newToDo) => {
 		//this createbutton would throw in form div which would return an object
+		setVisible(false);
 		setToDoContentArr([...toDoContent, newToDo]);
 	};
 	const removeTodo = (removeElem) => {
@@ -50,7 +53,6 @@ function App() {
 		setSortType(sort);
 	};
 	function getSortedPosts() {
-		console.log('Got sorted');
 		if (sortType)
 			return [...toDoContent].sort((a, b) =>
 				a[sortType].localeCompare(b[sortType])
@@ -91,9 +93,15 @@ function App() {
 	function setSearchingText(text) {
 		setSearchText(text);
 	}
+	const [visible, setVisible] = useState(false);
 	return (
 		<>
-			<FormDiv create={createToDo} />
+			{/* <MyButton style={{ margin: 30 }} onClick={() => setVisible(true)}>
+				Создать пользователя
+			</MyButton> */}
+			<ModalWindow visible={visible} setVisible={setVisible}>
+				<FormDiv create={createToDo} />
+			</ModalWindow>
 			<br></br>
 			<br></br>
 			<SearchDiv
