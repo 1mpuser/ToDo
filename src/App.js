@@ -27,6 +27,7 @@ function App() {
 		{ title: 'Java', body: 'Java - ну такое', color: 'tomato' },
 		{ title: 'Le petuhon', body: 'Петухон для быдла', color: 'hotpink' },
 	]);
+
 	const [options, setOptions] = useState([
 		{
 			value: 'title',
@@ -38,17 +39,17 @@ function App() {
 		},
 	]);
 
-	const [sortType, setSortType] = useState('');
-
 	const createToDo = (newToDo) => {
-		//this createbutton would throw in form div which would return an object
-		setVisible(false);
+		//this create button would throw in form div which would return an object
 		setToDoContentArr([...toDoContent, newToDo]);
 	};
 	const removeTodo = (removeElem) => {
 		setToDoContentArr(toDoContent.filter((item) => item !== removeElem));
 		//we'll throw this to button which would return todo object
 	};
+
+	const [sortType, setSortType] = useState('');
+
 	const sortObjs = (sort) => {
 		setSortType(sort);
 	};
@@ -93,13 +94,17 @@ function App() {
 	function setSearchingText(text) {
 		setSearchText(text);
 	}
-	const [visible, setVisible] = useState(false);
+	const [modalVisible, setModalStatus] = useState(false);
 	return (
 		<>
-			{/* <MyButton style={{ margin: 30 }} onClick={() => setVisible(true)}>
+			{/* Слишком много ререндеров с кнопкой */}
+			<MyButton
+				style={{ margin: 10 }}
+				onClick={() => setModalStatus(!modalVisible)}
+			>
 				Создать пользователя
-			</MyButton> */}
-			<ModalWindow visible={visible} setVisible={setVisible}>
+			</MyButton>
+			<ModalWindow visible={modalVisible} setVisible={setModalStatus}>
 				<FormDiv create={createToDo} />
 			</ModalWindow>
 			<br></br>
