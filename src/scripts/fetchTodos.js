@@ -4,5 +4,4 @@ export default async function fetchTodos() {
 		'https://jsonplaceholder.typicode.com/posts'
 	);
 	return responce.data;
-	//написано для импорта
 }

@@ -15,17 +15,19 @@ import ModalWindow from './components/UI/ModalWIndow/ModalWindow';
 import MyButton from './components/UI/button/MyButton';
 import { useSortedTodos } from './hooks/useSortedTodos';
 import { useSearchTodos } from './hooks/useSearchTodos';
+import Loader from './components/UI/Loader/Loader';
+import useFetching from './hooks/useFetching';
 function App() {
 	//let id = nanoid;
 	//const buttonRef = useRef();
 	const [toDoContent, setToDoContentArr] = useState([
-		{
-			title: 'JS',
-			body: 'Js - норм, а все кто его хейтит петухи',
-			color: 'yellow',
-		},
-		{ title: 'Java', body: 'Java - ну такое', color: 'tomato' },
-		{ title: 'Le petuhon', body: 'Петухон для быдла', color: 'hotpink' },
+		// {
+		// 	title: 'JS',
+		// 	body: 'Js - норм, а все кто его хейтит петухи',
+		// 	color: 'yellow',
+		// },
+		// { title: 'Java', body: 'Java - ну такое', color: 'tomato' },
+		// { title: 'Le petuhon', body: 'Петухон для быдла', color: 'hotpink' },
 	]);
 
 	const [options, setOptions] = useState([
@@ -77,16 +79,27 @@ function App() {
 		setSearchText(text);
 	}
 	const [modalVisible, setModalStatus] = useState(false);
+	// const [todosFetching, isLoadingStatus, todoError] = useFetching(async () => {
+	// 	let responce = await fetchTodos();
+	// 	setToDoContentArr(responce);
+	// });
+	useEffect(() => {
+		setTimeout(() => {
+			fetchTodos().then(setToDoContentArr);
+			setLoadingStatus(false);
+		}, 3000);
+	}, []);
+	const [isLoadingStatus, setLoadingStatus] = useState(true);
 	return (
 		<>
-			<MyButton
+			{/* <MyButton
 				style={{ margin: 50 }}
 				onClick={() => {
 					fetchTodos().then(setToDoContentArr);
 				}}
 			>
 				ДАТА
-			</MyButton>
+			</MyButton> */}
 			<MyButton
 				style={{ margin: 10 }}
 				onClick={() => setModalStatus(!modalVisible)}
@@ -114,7 +127,15 @@ function App() {
 			<br></br>
 			<br></br>
 			<TodoFilter options={options} returnSortArr={sortObjs} />
-			<ToDoList remove={removeTodo} objs={searchedAndSortedTODOS} />
+			{isLoadingStatus ? (
+				<div
+					style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}
+				>
+					<Loader />
+				</div>
+			) : (
+				<ToDoList remove={removeTodo} objs={searchedAndSortedTODOS} />
+			)}
 		</>
 	);
 }
