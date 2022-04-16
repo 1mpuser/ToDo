@@ -1,10 +1,9 @@
 // import Todo from './components/UI/todo/Todo';
-// import MyButton from './components/UI/button/MyButton';
 // import WantedButton from './components/UI/normal button/WantedButton';
-// import MyInput from './components/UI/input/MyInput';
 import './styles/App.css';
 //import { nanoid } from 'nanoid';
-import { useState, useMemo } from 'react';
+import fetchTodos from './scripts/fetchTodos';
+import { useState, useMemo, useEffect } from 'react';
 import FormDiv from './components/UI/FormDiv/FormDiv';
 import ToDoList from './components/UI/TodoList/ToDoList';
 import MySelect from './components/UI/select/MySelect';
@@ -39,7 +38,6 @@ function App() {
 			name: 'По тексту todo',
 		},
 	]);
-
 	const createToDo = (newToDo) => {
 		//this create button would throw in form div which would return an object
 		setToDoContentArr([...toDoContent, newToDo]);
@@ -55,7 +53,6 @@ function App() {
 		setSortType(sort);
 	};
 
-	//это безобидно
 	let optionsWithSearchText = useMemo(
 		() => getSearchOptions(options),
 		[options]
@@ -73,21 +70,6 @@ function App() {
 		array4Decomposition
 	);
 
-	// function search() {
-	// 	if (searchText !== '' && searchType !== 'Тип поиска') {
-	// 		setSearchedAndSortedTODOS(sortedContent);
-	// 		setSearchedAndSortedTODOS(
-	// 			[...searchedAndSortedTODOS].filter((item) =>
-	// 				item[searchType].toLowerCase().includes(searchText.toLowerCase())
-	// 			)
-	// 		);
-	// 	} else setSearchedAndSortedTODOS(sortedContent);
-	// }
-	// const searchingRender = useMemo(
-	// 	() => search(),
-	// 	[sortedContent, searchType, searchText]
-	// );
-
 	function setType(type) {
 		setSearchType(type);
 	}
@@ -97,6 +79,14 @@ function App() {
 	const [modalVisible, setModalStatus] = useState(false);
 	return (
 		<>
+			<MyButton
+				style={{ margin: 50 }}
+				onClick={() => {
+					fetchTodos().then(setToDoContentArr);
+				}}
+			>
+				ДАТА
+			</MyButton>
 			<MyButton
 				style={{ margin: 10 }}
 				onClick={() => setModalStatus(!modalVisible)}
