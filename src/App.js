@@ -21,13 +21,13 @@ function App() {
 	//let id = nanoid;
 	//const buttonRef = useRef();
 	const [toDoContent, setToDoContentArr] = useState([
-		// {
-		// 	title: 'JS',
-		// 	body: 'Js - норм, а все кто его хейтит петухи',
-		// 	color: 'yellow',
-		// },
-		// { title: 'Java', body: 'Java - ну такое', color: 'tomato' },
-		// { title: 'Le petuhon', body: 'Петухон для быдла', color: 'hotpink' },
+		{
+			title: 'JS',
+			body: 'Js - норм, а все кто его хейтит петухи',
+			color: 'yellow',
+		},
+		{ title: 'Java', body: 'Java - ну такое', color: 'tomato' },
+		{ title: 'Le petuhon', body: 'Петухон для быдла', color: 'hotpink' },
 	]);
 
 	const [options, setOptions] = useState([
@@ -40,22 +40,14 @@ function App() {
 			name: 'По тексту todo',
 		},
 	]);
-	const createToDo = (newToDo) => {
-		//this create button would throw in form div which would return an object
-		setToDoContentArr([...toDoContent, newToDo]);
-	};
-	const removeTodo = (removeElem) => {
-		setToDoContentArr(toDoContent.filter((item) => item !== removeElem));
-		//we'll throw this to button which would return todo object
-	};
+	const archivedOptions = useMemo(() => {
+		console.log('Options changed');
+		return options;
+	}, [options]);
 
 	const [sortType, setSortType] = useState('');
 
-	const sortObjs = (sort) => {
-		setSortType(sort);
-	};
-
-	let optionsWithSearchText = useMemo(
+	const optionsWithSearchText = useMemo(
 		() => getSearchOptions([...options]),
 		[options]
 	);
@@ -63,28 +55,16 @@ function App() {
 	//this search functional is not much needed but we'll do it 4 practice
 	const [searchText, setSearchText] = useState('');
 	const [searchType, setSearchType] = useState('');
-	const array4Decomposition = useMemo(
-		() => [searchType, searchText],
-		[searchType, searchText]
-	);
-	let searchedAndSortedTODOS = useSearchTodos(
+
+	const searchedAndSortedTODOS = useSearchTodos(
 		sortedContent,
-		array4Decomposition
+		searchType,
+		searchText
 	);
 
-	function setType(type) {
-		setSearchType(type);
-	}
-	function setSearchingText(text) {
-		setSearchText(text);
-	}
 	const [modalVisible, setModalStatus] = useState(false);
-	// const [todosFetching, isLoadingStatus, todoError] = useFetching(async () => {
-	// 	let responce = await fetchTodos();
-	// 	setToDoContentArr(responce);
-	// });
+
 	const [fetching, isLoadingStatus, error] = useFetching(async () => {
-		console.log('Done!');
 		const responce = await fetchTodos();
 		return setToDoContentArr(responce);
 	});
@@ -111,13 +91,15 @@ function App() {
 				Создать пользователя
 			</MyButton>
 			<ModalWindow visible={modalVisible} setVisible={setModalStatus}>
-				<FormDiv create={createToDo} />
+				<FormDiv
+					create={(newToDo) => setToDoContentArr([...toDoContent, newToDo])}
+				/>
 			</ModalWindow>
 			<br></br>
 			<br></br>
 			<SearchDiv
-				typeSetter={setType}
-				setQuery={setSearchingText}
+				typeSetter={(type) => setSearchType(type)}
+				setQuery={(text) => setSearchText(text)}
 				options={optionsWithSearchText}
 				defaultValue={'Тип поиска'}
 			/>
@@ -130,7 +112,10 @@ function App() {
 			/> */}
 			<br></br>
 			<br></br>
-			<TodoFilter options={options} returnSortArr={sortObjs} />
+			<TodoFilter
+				options={archivedOptions}
+				returnSortArr={(sort) => setSortType(sort)}
+			/>
 			{isLoadingStatus ? (
 				<div
 					style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}
@@ -138,7 +123,12 @@ function App() {
 					<Loader />
 				</div>
 			) : (
-				<ToDoList remove={removeTodo} objs={searchedAndSortedTODOS} />
+				<ToDoList
+					remove={(removeElem) =>
+						setToDoContentArr(toDoContent.filter((item) => item !== removeElem))
+					}
+					objs={searchedAndSortedTODOS}
+				/>
 			)}
 		</>
 	);
