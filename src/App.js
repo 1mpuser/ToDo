@@ -56,7 +56,7 @@ function App() {
 	};
 
 	let optionsWithSearchText = useMemo(
-		() => getSearchOptions(options),
+		() => getSearchOptions([...options]),
 		[options]
 	);
 	const sortedContent = useSortedTodos(toDoContent, sortType);
@@ -83,13 +83,17 @@ function App() {
 	// 	let responce = await fetchTodos();
 	// 	setToDoContentArr(responce);
 	// });
+	const [fetching, isLoadingStatus, error] = useFetching(async () => {
+		console.log('Done!');
+		const responce = await fetchTodos();
+		return setToDoContentArr(responce);
+	});
 	useEffect(() => {
-		setTimeout(() => {
-			fetchTodos().then(setToDoContentArr);
-			setLoadingStatus(false);
-		}, 3000);
+		async function fet() {
+			await fetching();
+		}
+		fet();
 	}, []);
-	const [isLoadingStatus, setLoadingStatus] = useState(true);
 	return (
 		<>
 			{/* <MyButton

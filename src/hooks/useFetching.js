@@ -1,13 +1,13 @@
 import { useState } from 'react';
 export default function useFetching(callback) {
 	const [isLoading, setLoadingStatus] = useState(false);
-	const [error, setError] = useState('');
+	const [error, setError] = useState(false);
 	const fetching = async () => {
 		try {
 			setLoadingStatus(true);
-			await callback;
+			await callback();
 		} catch (e) {
-			setError(e.message);
+			setError(e);
 		} finally {
 			setLoadingStatus(false);
 		}
