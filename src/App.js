@@ -15,6 +15,8 @@ import { useSearchTodos } from './hooks/useSearchTodos';
 import Loader from './components/UI/Loader/Loader';
 import useFetching from './hooks/useFetching';
 import getOptionsWithSortText from './scripts/getOptionsWithSortText';
+import getPageCount from './scripts/getPageCount';
+import usePagination from './hooks/usePagination';
 function App() {
 	const id = nanoid;
 	const [toDoContent, setToDoContentArr] = useState([]);
@@ -45,14 +47,21 @@ function App() {
 
 	const [modalVisible, setModalStatus] = useState(false);
 
-	//special 4 pagiation
-	const [totalTodosCount, setTotalTodosCount] = useState(0);
+	//special states 4 pagiation
+	const [totalPages, setTotalPages] = useState(0);
+	const [pageLimit, setPageLimit] = useState(10);
+	const [pageNumber, setPageNumber] = useState(1);
+	//
+
 	const [fetching, isLoadingStatus, error] = useFetching(async () => {
-		const responce = await fetchTodos();
+		const responce = await fetchTodos(pageLimit, pageNumber);
 		setToDoContentArr(responce.data);
-		console.log(responce.headers['x-total-count']);
-		setTotalTodosCount(responce.headers['x-total-count']);
+		setTotalPages(getPageCount(responce.headers['x-total-count'], pageLimit));
 	});
+
+	const pagesArray = usePagination(totalPages);
+	//
+
 	useEffect(() => {
 		async function fet() {
 			await fetching();
@@ -100,6 +109,9 @@ function App() {
 					objs={searchedAndSortedTODOS}
 				/>
 			)}
+			{pagesArray.map((item) => (
+				<MyButton key={id()}>{item}</MyButton>
+			))}
 		</>
 	);
 }
