@@ -2,7 +2,6 @@ import React from 'react';
 //import usePagination from '../../hooks/usePagination';
 //there is not could be any hooks cuse they must be on upper level
 import classes from './pageWrapper.module.css';
-import MyButton from '../UI/button/MyButton';
 import { nanoid } from 'nanoid';
 
 const PageWrapper = (props) => {
@@ -11,13 +10,14 @@ const PageWrapper = (props) => {
     let buttonArr = [];
     if (Array.isArray(props.arrWithTotalPages))  { buttonArr = props.arrWithTotalPages.map((item, index) => {
             let isItCurrentIndex = false;
-            if (props.currentPage  === index) isItCurrentIndex = true;
-            return <MyButton 
+            if (props.currentPage - 1  === index) isItCurrentIndex = true;
+            return <button 
                         className={isItCurrentIndex ?  classes.pageS : classes.page} 
                         key={id()}
+                        onClick = {()=>props.PageSet(item)}
                         >
                             {item}
-                    </MyButton>});}
+                    </button>});}
     else {
         console.log(props.arrWithTotalPages);
         buttonArr = <div>{'Хуй'}</div>;

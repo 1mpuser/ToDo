@@ -4,8 +4,16 @@
 .page{
     padding: 10;
     cursor: pointer;
+    margin-left: 3px;
+    margin-right: 3px;
+    width: 30px;
 }
 .pageS{
+    margin-left: 3px;
+    margin-right: 3px;
+    width: 30px;
+    padding: 10;
+    cursor: pointer;
     border: 2px solid fuchsia;
     font-weight: bold;
 }

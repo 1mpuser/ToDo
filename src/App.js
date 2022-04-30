@@ -51,7 +51,7 @@ function App() {
 	//special states 4 pagiation
 	const [totalPages, setTotalPages] = useState(0);
 	const [pageLimit, setPageLimit] = useState(10);
-	const [pageNumber, setPageNumber] = useState(1);
+	const [pageNumber, setPageNumber] = useState(2);
 	const pagesArray = usePagination(totalPages);
 	//
 
@@ -69,7 +69,7 @@ function App() {
 			await fetching();
 		}
 		fet();
-	}, []);
+	}, [pageNumber]);
 	return (
 		<>
 			<MyButton
@@ -111,7 +111,15 @@ function App() {
 					objs={searchedAndSortedTODOS}
 				/>
 			)}
-			{<PageWrapper arrWithTotalPages={pagesArray} currentPage={pageNumber} />}
+			{
+				<PageWrapper
+					arrWithTotalPages={pagesArray}
+					currentPage={pageNumber}
+					PageSet={(numberOfPageFromButton) =>
+						setPageNumber(numberOfPageFromButton)
+					}
+				/>
+			}
 		</>
 	);
 }
