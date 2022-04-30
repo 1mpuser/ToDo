@@ -1,0 +1,11 @@
+.PW{
+    margin-top: 30px, 
+}
+.page{
+    padding: 10;
+    cursor: pointer;
+}
+.pageS{
+    border: 2px solid fuchsia;
+    font-weight: bold;
+}

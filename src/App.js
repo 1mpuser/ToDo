@@ -17,6 +17,7 @@ import useFetching from './hooks/useFetching';
 import getOptionsWithSortText from './scripts/getOptionsWithSortText';
 import getPageCount from './scripts/getPageCount';
 import usePagination from './hooks/usePagination';
+import PageWrapper from './components/pageWrapper/PageWrapper';
 function App() {
 	const id = nanoid;
 	const [toDoContent, setToDoContentArr] = useState([]);
@@ -51,6 +52,7 @@ function App() {
 	const [totalPages, setTotalPages] = useState(0);
 	const [pageLimit, setPageLimit] = useState(10);
 	const [pageNumber, setPageNumber] = useState(1);
+	const pagesArray = usePagination(totalPages);
 	//
 
 	const [fetching, isLoadingStatus, error] = useFetching(async () => {
@@ -59,7 +61,7 @@ function App() {
 		setTotalPages(getPageCount(responce.headers['x-total-count'], pageLimit));
 	});
 
-	const pagesArray = usePagination(totalPages);
+	//usePagination(totalPages);
 	//
 
 	useEffect(() => {
@@ -109,9 +111,7 @@ function App() {
 					objs={searchedAndSortedTODOS}
 				/>
 			)}
-			{pagesArray.map((item) => (
-				<MyButton key={id()}>{item}</MyButton>
-			))}
+			{<PageWrapper arrWithTotalPages={pagesArray} currentPage={pageNumber} />}
 		</>
 	);
 }
