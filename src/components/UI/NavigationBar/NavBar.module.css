@@ -1,0 +1,13 @@
+.navbar {
+    height: 50px;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    background-color: cornflowerblue;
+    
+}
+.navbar__links {
+    margin: 15px;
+    margin-left: auto;
+}

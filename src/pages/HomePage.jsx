@@ -1,6 +1,6 @@
 const HomePage = () => {
     return (
-        <div>Welocme to start page!</div>
+        <div>Welcome to start page!</div>
     );
 }
 

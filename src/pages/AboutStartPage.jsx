@@ -1,6 +1,10 @@
 const AboutStartPage = () => {
     return (
-        <h1>It works!</h1>
+        <>
+            <br></br>
+            <br></br>
+            <h1>This text is created 4 education</h1>
+        </>
     );
 }
 
