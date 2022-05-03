@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MySelect from './UI/select/MySelect';
+import MySelect from '../UI/select/MySelect';
 
 
 const TodoFilter = ({returnSortArr, ...props}) => {
